@@ -30,7 +30,9 @@ def create_tables(cursor):
             password VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             is_admin BOOLEAN NOT NULL DEFAULT FALSE,
-            UNIQUE (email)
+            UNIQUE (email),
+            COUNTY VARCHAR(255) NOT NULL,
+            CITY VARCHAR(255) NOT NULL
         )
         """,
         """

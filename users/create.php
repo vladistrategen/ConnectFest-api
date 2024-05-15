@@ -9,21 +9,22 @@ include '../config.php';
 $data = json_decode(file_get_contents("php://input"));
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    // Status code 204 means "No Content" and that there will be no body in the response
     http_response_code(204);
     exit();
 }
 
-if(isset($data->username) && isset($data->email) && isset($data->password)) {
+if(isset($data->username) && isset($data->email) && isset($data->password) && isset($data->county) && isset($data->city)) {
     $username = $data->username;
     $email = $data->email;
-    $password = password_hash($data->password, PASSWORD_DEFAULT); // Hash the password
+    $password = password_hash($data->password, PASSWORD_DEFAULT); 
+    $county = $data->county;
+    $city = $data->city;
 
-    $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO users (username, email, password, county, city) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
 
     if($stmt) {
-        $stmt->bind_param("sss", $username, $email, $password);
+        $stmt->bind_param('sssss',$username, $email, $password, $county, $city);
         if($stmt->execute()) {
             echo json_encode(["message" => "User registered successfully"]);
         } else {

@@ -17,16 +17,16 @@ def create_connection():
 
 def insert_users(cursor):
     query = """
-    INSERT INTO Users (username, password, email, is_admin)
-    VALUES (%s, %s, %s, %s)
+    INSERT INTO Users (username, password, email, is_admin, county, city)
+    VALUES (%s, %s, %s, %s, %s, %s)
     """
     
     users = [
-        ('Alice', sha256_crypt.hash('123'), 'alice@example.com', False),
-        ('Bob', sha256_crypt.hash('123'), 'bob@example.com', False),
-        ('Charlie', sha256_crypt.hash('123'), 'charlie@example.com', True),
-        ('David', sha256_crypt.hash('123'), 'david@example.com', False),
-        ('Eva', sha256_crypt.hash('123'), 'eva@example.com', True)
+        ('Alice', sha256_crypt.hash('123'), 'alice@example.com', False, 'ab', 'Alba Iulia'),
+        ('Bob', sha256_crypt.hash('123'), 'bob@example.com', False, 'gj', 'Targu Jiu'),
+        ('Charlie', sha256_crypt.hash('123'), 'charlie@example.com', True, 'b', 'Sector 2'),
+        ('David', sha256_crypt.hash('123'), 'david@example.com', False, 'b', 'Sector 4'),
+        ('Eva', sha256_crypt.hash('123'), 'eva@example.com', True, 'b', 'Sector 6')
     ]
     try:
         cursor.executemany(query, users)

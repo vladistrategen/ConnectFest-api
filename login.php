@@ -19,7 +19,7 @@ $username = $input['username'];
 $password = $input['password'];
 
 // Prepare SQL to prevent SQL injection
-$sql = "SELECT id, username, password FROM users WHERE username = ?";
+$sql = "SELECT id, username, is_admin, password FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $username);
 $stmt->execute();
@@ -29,7 +29,7 @@ if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
     if (password_verify($password, $user['password'])) {
         // Password is correct
-        echo json_encode(['message' => 'Login successful', 'user' => $user['username']]);
+        echo json_encode([ 'user' => $user['username'], 'isAdmin' => $user['is_admin']]);
     } else {
         // Password is not correct
         http_response_code(403); // Forbidden

@@ -1,4 +1,4 @@
-<?php
+<? 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
@@ -17,21 +17,18 @@ if ($conn->connect_error) {
 $inputJSON = file_get_contents('php://input');
 $input = json_decode($inputJSON, true);
 
-if (isset($input['id']) && isset($input['title']) && isset($input['date']) && isset($input['location']) && isset($input['description']) && isset($input['image_url'])) {
-    $sql = $conn->prepare("UPDATE Events SET title = ?, date = ?, location = ?, description = ?, image_url = ? WHERE id = ?");
-    $sql->bind_param("sssssi", $input['title'], $input['date'], $input['location'], $input['description'], $input['image_url'], $input['id']);
+if (isset($input['event_id'], $input['user_id'])) {
+    $sql = $conn->prepare("INSERT INTO User_Events (event_id, user_id) VALUES (?, ?)");
+    $sql->bind_param("ii", $input['event_id'], $input['user_id']);
     
     if ($sql->execute()) {
-        echo json_encode(["message" => "Event updated successfully"]);
+        echo json_encode(["message" => "Interest marked successfully"]);
     } else {
         http_response_code(500);
-        echo json_encode(["message" => "Failed to update event"]);
+        echo json_encode(["message" => "Failed to mark interest"]);
     }
     $sql->close();
 } else {
     http_response_code(400);
     echo json_encode(["message" => "Incomplete data provided"]);
 }
-
-$conn->close();
-?>
