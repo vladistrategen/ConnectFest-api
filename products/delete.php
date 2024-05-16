@@ -36,7 +36,6 @@ if (isset($input['id'])) {
     if ($sql->execute()) {
         echo json_encode(["message" => "Event deleted successfully"]);
     } else {
-        // also include the error message from sql
         http_response_code(500);
         echo json_encode(["message" => "Failed to delete event", "error" => $sql->error]);
     }
